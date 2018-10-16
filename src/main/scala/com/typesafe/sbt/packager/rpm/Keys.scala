@@ -11,11 +11,21 @@ trait RpmKeys {
   val rpmVendor =
     SettingKey[String]("rpm-vendor", "Name of the vendor for this RPM.")
   val rpmOs = SettingKey[String]("rpm-os", "Name of the os for this RPM.")
+
+  //- The release number is the package’s version.
+  //- When the sofware is first packaged at a particular version, the release should be "1".
+  //- If the software is repackaged at the same version, the release number should be incremented,
+  //- and dropped back to "1" when the software version is new.
+  //- Its value defines the third com ponent of the rpm file name (packageName-version-rpmRelease.packageArchitecture.rpm),
+  //- as well as the Release: tag in the spec file. Its default value is "1".
   val rpmRelease = SettingKey[String]("rpm-release", "Special release number for this rpm (vs. the software).")
+
+  //- The path passed set as the base for the revocable package
   val rpmPrefix = SettingKey[Option[String]]("rpm-prefix", "File system prefix for relocatable package.")
   val rpmMetadata = SettingKey[RpmMetadata]("rpm-metadata", "Metadata associated with the generated RPM.")
 
   // Changelog
+  //- External file to be imported and used to generate the changelog of the RPM.
   val rpmChangelogFile = SettingKey[Option[String]]("rpm-changelog-file", "RPM changelog file to be imported")
 
   // DESCRIPTION KEYS
@@ -33,19 +43,34 @@ trait RpmKeys {
     SettingKey[RpmDescription]("rpm-description", "Description of this rpm.")
 
   // DEPENDENCIES
+  //- Enable or disable the automatic processing of provided packages.
+  //- Takes the form "yes" or "no", defaults to "yes". Defines the AutoProv: tag in the spec file.
   val rpmAutoprov =
     SettingKey[String]("rpm-autoprov", "enable/disable automatic processing of 'provides' (\"yes\"/\"no\").")
+
+  //- Enable or disable the automatic processing of required packages.
+  //- Takes the form "yes" or "no", defaults to "yes". Defines the AutoReq: tag in the spec file.
   val rpmAutoreq =
     SettingKey[String]("rpm-autoreq", "enable/disable automatic processing of requirements (\"yes\"/\"no\").")
+
+  //- The RPM package names that this RPM provides.
   val rpmProvides =
     SettingKey[Seq[String]]("rpm-provides", "Packages this RPM provides.")
+
+  //- The RPM packages that are required to be installed for this RPM to work.
   val rpmRequirements =
     SettingKey[Seq[String]]("rpm-requirements", "Packages this RPM requires.")
+
+  //- The RPM packages this RPM needs before installation
   val rpmPrerequisites = SettingKey[Seq[String]]("rpm-prerequisites", "Packages this RPM need *before* installation.")
+
+  //- The packages this RPM allows you to remove
   val rpmObsoletes = SettingKey[Seq[String]]("rpm-obsoletes", "Packages this RPM makes obsolete.")
   val rpmConflicts = SettingKey[Seq[String]]("rpm-conflicts", "Packages this RPM conflicts with.")
   val rpmDependencies =
     SettingKey[RpmDependencies]("rpm-dependencies", "Configuration of dependency info for this RPM.")
+
+  //- Run rpmbuild via Linux setarch command. Use this for cross-platform builds.
   val rpmSetarch = SettingKey[Option[String]]("rpm-setarch", "run rpmbuild in the context of an architecture.")
 
   // MAINTAINER SCRIPTS

@@ -5,6 +5,15 @@ import sbt._
 trait LinuxMappingDSL {
 
   /** DSL for packaging files into .deb */
+  /**
+    * This method takes a variable number of File -> String pairs.
+    * The File should be a locally available file that can be bundled,
+    * and the String is the installation location on disk for that file.
+    * This returns a new PackageMapping that supports the remaining methods.
+    *
+    * @param files
+    * @return
+    */
   def packageMapping(files: (File, String)*) = LinuxPackageMapping(files)
 
   /**

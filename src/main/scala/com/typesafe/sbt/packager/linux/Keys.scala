@@ -8,14 +8,24 @@ import com.typesafe.sbt.packager.archetypes.systemloader.ServerLoader
 /** Linux packaging generic build targets. */
 trait LinuxKeys {
   val packageArchitecture = SettingKey[String]("package-architecture", "The architecture used for this linux package.")
+
+  //- User to start application daemon
   val daemonUser =
     SettingKey[String]("daemon-user", "User to start application daemon")
+
+  //- UID of daemonUser
   val daemonUserUid =
     SettingKey[Option[String]]("daemon-user-uid", "UID of daemonUser")
+
+  //- Group to place daemonUser to
   val daemonGroup =
     SettingKey[String]("daemon-group", "Group to start application daemon")
+
+  //- GID of daemonGroup
   val daemonGroupGid =
     SettingKey[Option[String]]("daemon-group-gid", "GID of daemonGroup")
+
+  //- Shell provided for the daemon user
   val daemonShell =
     SettingKey[String]("daemon-shell", "Shell provided for the daemon user")
   val fileDescriptorLimit = SettingKey[Option[String]](
@@ -23,10 +33,13 @@ trait LinuxKeys {
     "Maximum number of open file descriptors for the spawned application"
   )
 
+  //- All mappings are stored in the task
   val linuxPackageMappings = TaskKey[Seq[LinuxPackageMapping]](
     "linux-package-mappings",
     "File to install location mappings including owner and privileges."
   )
+
+  //-  all currently configured symlinks
   val linuxPackageSymlinks =
     TaskKey[Seq[LinuxSymlink]]("linux-package-symlinks", "Symlinks we should produce in the underlying package.")
   val generateManPages = TaskKey[Unit]("generate-man-pages", "Shows all the man files in the current project")

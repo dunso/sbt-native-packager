@@ -5,10 +5,16 @@ package universal
 import sbt._
 
 trait UniversalKeys {
+
+  //- Creates the tgz package.
   val packageZipTarball =
     TaskKey[File]("package-zip-tarball", "Creates a tgz package.")
+
+  //- Creates the txz package. The xz command can get better compression for some types of archives.
   val packageXzTarball =
     TaskKey[File]("package-xz-tarball", "Creates a txz package.")
+
+  //- Creates the dmg package. This only work on OSX or systems with hdiutil.
   val packageOsxDmg = TaskKey[File]("package-osx-dmg", "Creates a dmg package for OSX (only on osx).")
   val stage = TaskKey[File](
     "stage",

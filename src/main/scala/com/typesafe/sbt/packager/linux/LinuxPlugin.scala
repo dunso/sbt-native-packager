@@ -44,6 +44,8 @@ object LinuxPlugin extends AutoPlugin {
     * default linux settings
     */
   def linuxSettings: Seq[Setting[_]] = Seq(
+
+    //- A list of files and their desired installation locations for the package, as well as other metainformation.
     linuxPackageMappings := Seq.empty,
     linuxPackageSymlinks := Seq.empty,
     sourceDirectory in Linux := sourceDirectory.value / "linux",
@@ -55,8 +57,14 @@ object LinuxPlugin extends AutoPlugin {
         log.info(man)
       }
     },
+
+    //- A one-sentence short summary of what the package does.
     packageSummary in Linux := packageSummary.value,
+
+    //- A longer description of what the package does and what it includes.
     packageDescription in Linux := packageDescription.value,
+
+    //- The name given the package for installation.
     name in Linux := name.value,
     packageName in Linux := packageName.value,
     executableScriptName in Linux := executableScriptName.value,
@@ -75,11 +83,15 @@ object LinuxPlugin extends AutoPlugin {
     stopRunlevels := None,
     requiredStartFacilities := None,
     requiredStopFacilities := None,
+
+    //- Maximum number of open file descriptors for the spawned application. The default value is 1024.
     fileDescriptorLimit := Some("1024"),
+
     termTimeout := 10,
     killTimeout := 10,
     // Default linux bashscript replacements
     linuxScriptReplacements := makeReplacements(
+      //- The name of the maintainer of the package (important for ownership and signing).
       author = (maintainer in Linux).value,
       description = (packageSummary in Linux).value,
       execScript = (executableScriptName in Linux).value,

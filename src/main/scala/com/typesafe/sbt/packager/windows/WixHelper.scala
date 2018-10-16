@@ -46,6 +46,9 @@ case class AddShortCuts(target: Seq[String], workingDir: String = "INSTALLDIR") 
 // TODO - Shortcut as a component element.
 
 /** Helper functions to deal with Wix/CAB craziness. */
+/**
+  * provides a few handy utilities for generating Wix XML.
+  */
 object WixHelper {
 
   /** Generates a windows friendly GUID for use in random locations in the build. */
@@ -256,6 +259,13 @@ object WixHelper {
     * characters and replacing with _.  Also limits the width to 70 (rather than
     * 72) so we can safely add a few later.
     */
+  /**
+    * Takes in a string and returns a wix-friendly identifier.
+    * Note: truncates to 50 characters.
+    *
+    * @param n
+    * @return
+    */
   def cleanStringForId(n: String) = {
     val x = n.replaceAll("[^0-9a-zA-Z_]", "_").takeRight(59) + (math.abs(n.hashCode).toString + "xxxxxxxxx")
       .substring(0, 9)
@@ -270,6 +280,12 @@ object WixHelper {
   }
 
   /** Cleans a file name for the Wix pre-processor.  Every $ should be doubled. */
+  /**
+    * Takes in a file name and replaces any $ with $$ to make it past the Wix preprocessor.
+    *
+    * @param n
+    * @return
+    */
   def cleanFileName(n: String) =
     n.replaceAll("\\$", "\\$\\$").replaceAll("\\/", "\\\\")
 
@@ -285,6 +301,14 @@ object WixHelper {
     */
   // TODO @deprecated("Use higher level abstraction", "6/28/13")
   // reference: https://github.com/sbt/sbt-native-packager/issues/726
+  /**
+    * take a file and generate <Directory>, <Component> and <File> XML elements for all files/directories contained in the given file.
+    * This is a handy way to package a large directory of files for usage in the Features of an MSI.
+    *
+    * @param dir
+    * @param id_prefix
+    * @return the Id settings for any generated components.
+    */
   def generateComponentsAndDirectoryXml(dir: File, id_prefix: String = ""): (Seq[String], scala.xml.Node) = {
     def makeId(f: File) =
       cleanStringForId(IO.relativize(dir, f) map (id_prefix +) getOrElse (id_prefix + f.getName))

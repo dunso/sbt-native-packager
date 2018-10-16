@@ -40,6 +40,10 @@ trait DebianNativePackaging extends DebianPluginLike {
     inConfig(Debian)(
       Seq(
         debianNativeBuildOptions += "-Znone", // packages are largely JARs, which are already compressed
+
+        /**
+          *- Generates the .changes, and therefore the .deb package for this project.
+          */
         genChanges := dpkgGenChanges(
           packageBin.value,
           debianChangelog.value,
@@ -57,11 +61,18 @@ trait DebianNativePackaging extends DebianPluginLike {
           }
           deb
         },
+
+        /**
+          *- Generates the .deb file and runs the lintian command to look for issues in the package. Useful for debugging.
+          */
         lintian := {
           val file = packageBin.value
           sys.process.Process(Seq("lintian", "-c", "-v", file.getName), Some(file.getParentFile)).!
         },
         /** Implementation of the actual packaging  */
+        /**
+          *-  Generates the .deb package for this project.
+          */
         packageBin := buildPackage(
           name.value,
           version.value,

@@ -14,9 +14,11 @@ import scala.xml.Node
   */
 trait JDKPackagerKeys {
 
+  //- Filename without the extension for the generated installer package.
   val jdkPackagerBasename: SettingKey[String] =
     settingKey[String]("Filename sans extension for generated installer package.")
 
+  //- Value passed as the native attribute to fx:deploy task.
   val jdkPackagerType: SettingKey[String] = settingKey[String](
     """Value passed as the `native` attribute to `fx:deploy` task.
       |Per `javapackager` documentation, this may be one of the following:
@@ -40,9 +42,11 @@ trait JDKPackagerKeys {
     """.stripMargin
   )
 
+  //- GUI toolkit used in app. Either JavaFXToolkit (default) or SwingToolkit
   val jdkPackagerToolkit: SettingKey[JDKPackagerToolkit] =
     settingKey[JDKPackagerToolkit]("GUI toolkit used in app. Either `JavaFXToolkit` (default) or `SwingToolkit`")
 
+  //- Sequence of arguments to pass to the JVM.
   val jdkPackagerJVMArgs: SettingKey[Seq[String]] = settingKey[Seq[String]](
     """Sequence of arguments to pass to the JVM.
       |Default: `Seq("-Xmx768m")`.
@@ -51,6 +55,7 @@ trait JDKPackagerKeys {
     """.stripMargin
   )
 
+  //- List of command line arguments to pass to the application on launch.
   val jdkPackagerAppArgs: SettingKey[Seq[String]] = settingKey[Seq[String]](
     """List of command line arguments to pass to the application on launch.
       |Default: `Seq.empty`
@@ -60,6 +65,7 @@ trait JDKPackagerKeys {
     """.stripMargin
   )
 
+  //- Map of System properties to define in application.
   val jdkPackagerProperties: SettingKey[Map[String, String]] = settingKey[Map[String, String]](
     """Map of `System` properties to define in application.
       |Default: `Map.empty`
@@ -68,6 +74,8 @@ trait JDKPackagerKeys {
     """.stripMargin
   )
 
+  //- Path to platform-specific application icon
+  //- Defaults to a generically bland Java icon.
   val jdkAppIcon: SettingKey[Option[File]] = settingKey[Option[File]]("""Path to platform-specific application icon:
       |    * `icns`: MacOS
       |    * `ico`: Windows
@@ -76,6 +84,7 @@ trait JDKPackagerKeys {
       | Defaults to generic Java icon.
     """.stripMargin)
 
+  //- Set of application file associations to register for the application.
   val jdkPackagerAssociations: SettingKey[Seq[FileAssociation]] = settingKey[Seq[FileAssociation]](
     """Set of application file associations to register for the application.
       |Example: `jdkPackagerAssociations := Seq(FileAssociation("foo", "application/x-foo", Foo Data File", iconPath))

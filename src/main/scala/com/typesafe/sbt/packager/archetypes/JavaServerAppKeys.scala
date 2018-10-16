@@ -7,6 +7,7 @@ import sbt._
   */
 trait JavaServerAppKeys {
 
+  //- daemon-stdout-log-file, Now it’s supported only in SystemV
   val daemonStdoutLogFile =
     SettingKey[Option[String]]("daemon-stdout-log-file", "Filename for redirecting stdout/stderr output from daemon")
 

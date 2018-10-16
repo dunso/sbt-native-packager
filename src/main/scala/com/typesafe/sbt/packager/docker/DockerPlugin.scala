@@ -122,6 +122,8 @@ object DockerPlugin extends AutoPlugin {
       mappings ++= dockerPackageMappings.value,
       name := name.value,
       packageName := packageName.value,
+
+      //- Builds an image using the local Docker server.
       publishLocal := {
         val log = streams.value.log
         publishLocalDocker(stage.value, dockerBuildCommand.value, log)
@@ -129,6 +131,8 @@ object DockerPlugin extends AutoPlugin {
           s"Built image ${dockerAlias.value.withTag(None).toString} with tags [${dockerAliases.value.flatMap(_.tag).mkString(", ")}]"
         )
       },
+
+      //- Builds an image using the local Docker server, and pushes it to the configured remote repository.
       publish := {
         val _ = publishLocal.value
         val alias = dockerAliases.value
@@ -138,6 +142,8 @@ object DockerPlugin extends AutoPlugin {
           publishDocker(execCommand, aliasValue.toString, log)
         }
       },
+
+      //- Removes the built image from the local Docker server.
       clean := {
         val alias = dockerAliases.value
         val log = streams.value.log
@@ -148,6 +154,8 @@ object DockerPlugin extends AutoPlugin {
         }
       },
       sourceDirectory := sourceDirectory.value / "docker",
+
+      //- Generates a directory with the Dockerfile and environment prepared for creating a Docker image.
       stage := Stager.stage(Docker.name)(streams.value, stagingDirectory.value, mappings.value),
       stage := (stage dependsOn dockerGenerateConfig).value,
       stagingDirectory := (target in Docker).value / "stage",

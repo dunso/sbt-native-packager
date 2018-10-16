@@ -32,6 +32,9 @@ object SystemdPlugin extends AutoPlugin {
   override def requires = SystemloaderPlugin
 
   object autoImport {
+    //- Takes a list of exit status definitions that when returned by the main service process will be considered successful termination,
+    //- in addition to the normal successful exit code 0 and the signals SIGHUP, SIGINT, SIGTERM, and SIGPIPE.
+    //- Exit status definitions can either be numeric exit codes or termination signal names.
     val systemdSuccessExitStatus =
       settingKey[Seq[String]]("SuccessExitStatus property")
   }

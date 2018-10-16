@@ -91,13 +91,15 @@ object WindowsPlugin extends AutoPlugin {
       ),
       wixConfig in Windows := wixConfig.value,
       wixProductConfig in Windows := wixProductConfig.value,
+
+      //- Generates the Wix xml file from wixConfig and wixProductConfig setings, unless overriden.
       wixFile := {
         val config = (wixConfig in Windows).value
         val wixConfigFile = (target in Windows).value / ((name in Windows).value + ".wxs")
         IO.write(wixConfigFile, config.toString)
         wixConfigFile
       }
-    ) ++ inConfig(Windows)(Seq(packageBin := {
+    ) ++ inConfig(Windows)(Seq(packageBin := { //- Creates the msi package.
       val wixFileValue = wixFile.value
       val msi = target.value / (name.value + ".msi")
       // First we have to move everything (including the wix file) to our target directory.
